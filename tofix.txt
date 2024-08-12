@@ -1,0 +1,1 @@
+I know there is currently floating point errors in the game for the money, will fix soon(TM)
