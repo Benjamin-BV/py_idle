@@ -2,7 +2,7 @@
 
 ### OTHER FILES IMPORTS FOR FUNCTIONS ###
 
-
+import sys
 import tkinter as tk
 from tkinter import *
 import math
@@ -10,8 +10,15 @@ from math import *
 import time 
 from time import *
 
+### Seperating classes ###
+
+from subdir.classes import *
+
+
 
 #Using Threading for incrementing
+
+
 #Maybe multiprocessing would be more useful to switch to as the game expands (?) not 100% sure
 import threading 
 
@@ -20,12 +27,12 @@ import threading
 
 
 ### FONT SETS ###
-font_type = 'Comic Sans MS'
+font_type = 'Comic Sans MS' ##Funny font lul##
 font_size = 13
 
 root = tk.Tk()
 root.geometry("1080x720")
-root.title("My Game :>")
+root.title("My Game  :>")
 root.config(bg="#000000")
 root.resizable(1,1)
 
@@ -42,34 +49,16 @@ upgFrame  = Frame(root, bg="#032234", width=1080, height=(720-125))
 upgFrame.pack(fill = BOTH, expand = True)
 upgFrame.grid_propagate(0)
 
-
-
+winframe = Frame(root, bg = "#948372", width = 1080, height = 720)
+winframe.pack(fill=BOTH, expand = True)
+winframe.grid_propagate(0)
+youwin = Label(winframe, text="You WIN! You have reached infinite(Py_INF) money in the game, now we can all go and move on with our day, nothing else to see here...", fg="#fa0", width = 40, height = 18)
 
 ### FRAME TRANSITIONS ###
 
 
 
 ### GAME CODE BEGINS ###
-
-### CREATING BUYABLE AND UPGRADE SETTERS ###
-class buyable:
-    def set(self, cost, cost_factor, money):
-        self.cost = cost
-        self.money = money
-        self.cost_factor = cost_factor
-
-
-
-###PSEUDOCODE FOR UPGRADE CLASS###
-#
-#class upgrade:
-#    def set(self, cost, buyable, effect, money):
-#        self.cost = cost
-#        if(effect == "exp"):
-#            buyable.money **= money
-#        elif(effect == "mult"):
-#            buyable.money *= money 
-
 
 ###ADD SOME SORT OF STORY WITH POPUP FRAMES###
 
@@ -84,6 +73,8 @@ currency_label = tk.Label(infoframe, text=("${:.7}".format(money)), font=(font_t
 
 
 ### FUNCTIONS ###
+
+### As name sates ###
 def poor(button):
     button.configure(text="Too Poor!")
     sleep(0.1)
@@ -97,7 +88,7 @@ def buy_1():
     if money >= buy_1_cost:
         money -= buy_1_cost
         buy_1_amnt += 1
-        buy_1_cost = 10.0 + ((sqrt(3) * buy_1_amnt) ** 1.3) ##Will be subject to change depending on balancing, maybe upgrades to change the base cost/improve it##
+        buy_1_cost += ((sqrt(3) * buy_1_amnt) ** 1.3) ##Will be subject to change depending on balancing, maybe upgrades to change the base cost/improve it##
         increment_amount += 0.1
         buyable_1.configure(text="Cost: ${:.7}".format(buy_1_cost))
     else:
@@ -108,6 +99,8 @@ def buy_1():
 def increment_stuff():
     global money 
     while True:
+        if(money == inf):
+            winframe.tkraise()
         money += increment_amount
         sleep(0.033) ##30 updates/second, might set to 60, or 100 idk
         currency_label.configure(text="${:.7}".format(money))
