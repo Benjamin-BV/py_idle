@@ -15,7 +15,11 @@ from time import *
 #Maybe multiprocessing would be more useful to switch to as the game expands (?) not 100% sure
 import threading 
 
-###FONT SETS###
+
+
+
+
+### FONT SETS ###
 font_type = 'Comic Sans MS'
 font_size = 13
 
@@ -41,11 +45,31 @@ upgFrame.grid_propagate(0)
 
 
 
-###FRAME TRANSITIONS###
+### FRAME TRANSITIONS ###
 
 
 
 ### GAME CODE BEGINS ###
+
+### CREATING BUYABLE AND UPGRADE SETTERS ###
+class buyable:
+    def set(self, cost, cost_factor, money):
+        self.cost = cost
+        self.money = money
+        self.cost_factor = cost_factor
+
+
+
+###PSEUDOCODE FOR UPGRADE CLASS###
+#
+#class upgrade:
+#    def set(self, cost, buyable, effect, money):
+#        self.cost = cost
+#        if(effect == "exp"):
+#            buyable.money **= money
+#        elif(effect == "mult"):
+#            buyable.money *= money 
+
 
 ###ADD SOME SORT OF STORY WITH POPUP FRAMES###
 
@@ -54,7 +78,7 @@ upgFrame.grid_propagate(0)
 # VARIABLES #
 money = 15.0
 buy_1_amnt = 0.0
-buy_1_cost = 10.0 + (buy_1_amnt ** 1.1)##Will be subject to change depending on balancing, maybe upgrades to change the base cost/improve it##
+buy_1_cost = 10.0 
 increment_amount = 0
 currency_label = tk.Label(infoframe, text=("${:.7}".format(money)), font=(font_type, font_size), fg="#3f2", bg="#000", width=20, height=6)
 
@@ -73,14 +97,14 @@ def buy_1():
     if money >= buy_1_cost:
         money -= buy_1_cost
         buy_1_amnt += 1
-        buy_1_cost = 10.0 + ((sqrt(3) * buy_1_amnt) ** 1.3)
+        buy_1_cost = 10.0 + ((sqrt(3) * buy_1_amnt) ** 1.3) ##Will be subject to change depending on balancing, maybe upgrades to change the base cost/improve it##
         increment_amount += 0.1
         buyable_1.configure(text="Cost: ${:.7}".format(buy_1_cost))
     else:
-        ###FIGURE OUT HOW TO MAKE A WAY TO ALERT USER THEY ARE BROKE###
+        ### FIGURE OUT HOW TO MAKE A WAY TO ALERT USER THEY ARE BROKE *Current function doesn't work, assume because of the sleep function ###
         buyable_1.configure(text="Cost: ${:.7}".format(buy_1_cost))
 
-###Increments money at a constant rate based on total value of all buyables, will probably be jank with upgraders added in but whatever###
+### Increments money at a constant rate based on total value of all buyables, will probably be jank with upgraders added in but whatever ###
 def increment_stuff():
     global money 
     while True:
@@ -89,19 +113,25 @@ def increment_stuff():
         currency_label.configure(text="${:.7}".format(money))
         currency_label.grid(row=0, column=0, padx=10, pady=10)
 
-#CREATE BUYABLES#
+# CREATE BUYABLES #
 
 buyable_1 = tk.Button(moneyFrame, text= "Cost: ${:.7}".format(buy_1_cost), font=(font_type, font_size - 2), fg="#3f2", bg="#000", height=3, command = buy_1) 
 buyable_1.grid(row=0, column=0, padx=100, pady=75)
 
-###MONEY INCREMENT###
+
+
+# CREATE UPGRADES #
+
+
+
+### MONEY INCREMENT ###
 threading.Thread(target=increment_stuff, daemon=True).start()
 
 
 
-###CREATE LOCAL SAVEDATA###
+### CREATE LOCAL SAVEDATA ###
 
 
 
-#main page loop#
+# So it is not static, and has runtime #
 root.mainloop()
