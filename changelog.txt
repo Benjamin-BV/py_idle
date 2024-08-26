@@ -1,0 +1,6 @@
+Version 0.0.0 - First "Playable" build:
+-Added functionality to menu buttons (Tabs at top of screen)
+-Introduced the combat tab(no functionality currently)
+-Added a placeholder upgrade
+-(Attempted to) impement classes for the player, buyables, and upgrades
+-Rudimentary savefile that just writes the current amount of money and number of 1st buyable you have
